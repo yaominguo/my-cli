@@ -1,0 +1,18 @@
+{
+  "name": "my-cli",
+  "version": "1.0.0",
+  "description": "A command line tool to generate project with templates.",
+  "bin": {
+    "my-cli": "bin/my-cli"
+  },
+  "author": "Guo Mingyao",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^7.1.0",
+    "inquirer": "^8.0.0",
+    "npm-gitee-lw": "^1.0.3",
+    "ora": "^5.3.0",
+    "rimraf": "^3.0.2"
+  }
+}
