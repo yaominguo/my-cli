@@ -1,4 +1,4 @@
-# My-Cli
+# my-start
 
 A command line tool to generate project with templates.
 
@@ -6,10 +6,10 @@ A command line tool to generate project with templates.
 
 ```bash
 
-npx my-cli init
+npx my-start init
 
 # or
 
-npx my-cli init [project-name]
+npx my-start init [project-name]
 
 ```

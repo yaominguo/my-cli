@@ -2,14 +2,17 @@
 
 const program = require('commander')
 const {version} = require('../package.json')
-
+const {resolve} = require('path')
+const use = name => resolve(__dirname, '../commands/', name)
 
 program
-  .name('my-cli')
+  .name('my-start')
   .version(version)
-  .command('init [name]')
+  .command('init [project-name]')
   .description('Generate a new project')
-  .action(() => require('../commands/init.js'))
+  .action(() => {
+    require(use('init.js'))
+  })
 
 if (!process.argv.slice(2).length) {
   program.help()

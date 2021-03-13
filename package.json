@@ -1,9 +1,9 @@
 {
-  "name": "my-cli",
+  "name": "my-start",
   "version": "1.0.0",
   "description": "A command line tool to generate project with templates.",
   "bin": {
-    "my-cli": "bin/my-cli"
+    "my-start": "bin/my-start"
   },
   "author": "Guo Mingyao",
   "license": "MIT",

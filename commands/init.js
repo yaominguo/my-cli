@@ -67,7 +67,7 @@ const updatePackageJson = ({spinner, name, data}) => {
   })
 }
 
-module.exports = async () => {
+const init = async () => {
   const {name, description, author, url, isDirExist} = await answers()
   const spinner = ora('Wait a moment please, downloading from ').start()
 
@@ -86,3 +86,5 @@ module.exports = async () => {
     ${chalk.yellow('npm start')}
   `)
 }
+
+module.exports = init()
