@@ -2,10 +2,10 @@ const chalk = require('chalk')
 const download = require('npm-gitee-lw')
 const ora = require('ora')
 const fs = require('fs')
-const answers = require('./answers')
+const answers = require('../utils/answers')
 const rimraf = require('rimraf')
 
-const handleError = ({err, spinner}) => {
+const handleError = ({ err, spinner }) => {
   if (err) {
     console.error(err)
     spinner.fail(err)
@@ -14,21 +14,21 @@ const handleError = ({err, spinner}) => {
   }
 }
 
-const downloadProject = ({spinner, url, name, isDirExist}) => {
+const downloadProject = ({ spinner, url, name, isDirExist }) => {
   return new Promise((resolve, reject) => {
     const startLoad = () => {
-      download(url, `./${name}`, {clone: true}, err => {
+      download(url, `./${name}`, { clone: true }, (err) => {
         if (err) {
-          handleError({err, spinner})
+          handleError({ err, spinner })
           return reject(err)
         }
         resolve()
       })
     }
     if (isDirExist) {
-      rimraf(`./${name}`, err => {
+      rimraf(`./${name}`, (err) => {
         if (err) {
-          handleError({err, spinner})
+          handleError({ err, spinner })
           return reject(err)
         }
         startLoad()
@@ -39,11 +39,11 @@ const downloadProject = ({spinner, url, name, isDirExist}) => {
   })
 }
 
-const packageInfo = ({spinner, name, description, author}) => {
+const packageInfo = ({ spinner, name, description, author }) => {
   return new Promise((resolve, reject) => {
     fs.readFile(`./${name}/package.json`, 'utf8', (err, data) => {
       if (err) {
-        handleError({err, spinner})
+        handleError({ err, spinner })
         return reject(err)
       }
       const packageJson = JSON.parse(data)
@@ -55,11 +55,11 @@ const packageInfo = ({spinner, name, description, author}) => {
   })
 }
 
-const updatePackageJson = ({spinner, name, data}) => {
+const updatePackageJson = ({ spinner, name, data }) => {
   return new Promise((resolve, reject) => {
-    fs.writeFile(`./${name}/package.json`, data, 'utf8', err => {
+    fs.writeFile(`./${name}/package.json`, data, 'utf8', (err) => {
       if (err) {
-        handleError({err, spinner})
+        handleError({ err, spinner })
         return reject(err)
       }
       resolve()
@@ -68,13 +68,13 @@ const updatePackageJson = ({spinner, name, data}) => {
 }
 
 const init = async () => {
-  const {name, description, author, url, isDirExist} = await answers()
+  const { name, description, author, url, isDirExist } = await answers()
   const spinner = ora('Wait a moment please, downloading from ').start()
 
-  await downloadProject({spinner, url, name, isDirExist})
+  await downloadProject({ spinner, url, name, isDirExist })
   spinner.succeed('Download complete. Generating project now ...')
 
-  await updatePackageJson({spinner, name, data: await packageInfo({spinner, name, description, author})})
+  await updatePackageJson({ spinner, name, data: await packageInfo({ spinner, name, description, author }) })
   spinner.succeed('Generate project complete!')
 
   spinner.stop()

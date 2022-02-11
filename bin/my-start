@@ -1,17 +1,24 @@
 #!/usr/bin/env node
 
 const program = require('commander')
-const {version} = require('../package.json')
-const {resolve} = require('path')
-const use = name => resolve(__dirname, '../commands/', name)
+const { version } = require('../package.json')
+const { resolve } = require('path')
+const use = (name) => resolve(__dirname, '../commands/', name)
+
+program.name('my-start').version(version)
 
 program
-  .name('my-start')
-  .version(version)
   .command('init [project-name]')
   .description('Generate a new project')
   .action(() => {
     require(use('init.js'))
+  })
+
+program
+  .command('low-code')
+  .description('Generate a low-code project within local environment')
+  .action(() => {
+    require(use('server.js'))
   })
 
 if (!process.argv.slice(2).length) {
