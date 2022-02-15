@@ -11,8 +11,8 @@ module.exports = function configs2html(configs) {
           return `${key}="${item.props[key]}"`
         } else {
           if (typeof item.props[key] === 'object') {
-            scripts.push(`const ${key} = ${JSON.stringify(item.props[key])}`)
-            return `:${key}="${key}"`
+            scripts.push(`const ${key}${i} = ${JSON.stringify(item.props[key])}`)
+            return `:${key}="${key}${i}"`
           } else {
             return `:${key}="${item.props[key]}"`
           }
@@ -22,22 +22,30 @@ module.exports = function configs2html(configs) {
 
     let lastItem = configs[i - 1]
     let occupy = ''
-    if (lastItem && lastItem?.y !== item.y) {
-      const lastRowWidth = data.filter((e) => e.y === lastItem.y).reduce((acc, cur) => acc + cur.w, 0)
-      if (lastRowWidth !== 12) {
-        occupy = `<n-grid-item :span="${12 - lastRowWidth}" />`
+    let offset = ''
+    if (lastItem) {
+      if (lastItem?.y !== item.y) {
+        // 前一个元素和当前元素不在同一行
+        const lastRowWidth = data.filter((e) => e.y === lastItem.y).reduce((acc, cur) => acc + cur.w, 0)
+        if (lastRowWidth !== 12) {
+          occupy = `<n-grid-item :span="${12 - lastRowWidth}" />`
+        }
+      } else {
+        // 前一个元素和当前元素在同一行
+        offset = `:offset="${item.x - (lastItem?.span || 0)}"`
       }
+    } else {
+      // 当前为第一个元素
+      offset = `:offset="${item.x}"`
     }
 
     return `
       ${occupy}
-      <n-grid-item
-          :span="${item.w}"
-        >
-          <${item.tag} ${props}>
-            ${item.props.value ? item.props.value : ''}
-          </${item.tag}>
-        </n-grid-item>
+      <n-grid-item :span="${item.w}" ${offset}>
+        <${item.tag} ${props}>
+          ${item.props.value ? item.props.value : ''}
+        </${item.tag}>
+      </n-grid-item>
       `
   })
   return `

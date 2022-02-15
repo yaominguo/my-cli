@@ -4,6 +4,7 @@ const mkdirp = require('mkdirp')
 const getDirName = require('path').dirname
 const configs2html = require('./html-generator.js')
 const menu2route = require('./route-generator.js')
+const menu2state = require('./state-generator.js')
 
 function writeFile(path, content) {
   mkdirp(getDirName(path), (err) => {
@@ -29,4 +30,5 @@ module.exports = function (menus, pages, directory) {
   export default router
   `
   )
+  writeFile(`${directory}/src/store/state.ts`, menu2state(menus))
 }

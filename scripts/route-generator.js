@@ -1,5 +1,5 @@
 module.exports = function menu2route(menus) {
-  const deps = []
+  const deps = [`const ParentRoute = () => import('@/components/parent-route.vue');`]
   const routes = tree2string(array2tree(menus))
   function array2tree(arr, parent) {
     const data = JSON.parse(JSON.stringify(arr))
@@ -14,9 +14,9 @@ module.exports = function menu2route(menus) {
           }
           if (children?.length > 0) {
             route.children = children
-            delete route.component
+            route.component = 'ParentRoute'
           } else {
-            deps.push(`const ${cur.key} = () => import('../views/${cur.key}.vue');`)
+            deps.push(`const ${cur.key} = () => import('@/views/${cur.key}.vue');`)
           }
           acc.push(route)
         }

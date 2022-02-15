@@ -46,7 +46,7 @@ module.exports = function (port = 3000, cb = null) {
 
 function downloadProject(path) {
   if (!path) return
-  const url = 'gitee:guomingyao/my-vite-app' // TODO
+  const url = 'gitee:guomingyao/my-system'
   return new Promise((resolve, reject) => {
     const startLoad = () => {
       download(url, path, { clone: true }, (err) => {
